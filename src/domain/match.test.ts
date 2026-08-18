@@ -76,6 +76,13 @@ test('parseExperienceYears handles dataset forms', () => {
   assert.equal(parseExperienceYears(null), null)
 })
 
+test('parseExperienceYears handles PDF-truncated "no inferior a" forms', () => {
+  // Real dataset: the PDF split the token — "cinco (5) Tarjeta profesional" and
+  // even "cinco Tarjeta" with no parenthesized number at all.
+  assert.equal(parseExperienceYears('Experiencia profesional por lapso no inferior a cinco (5) Tarjeta profesional'), 5)
+  assert.equal(parseExperienceYears('Experiencia profesional por lapso no inferior a cinco Tarjeta profesional'), 5)
+})
+
 test('detectEducationLevel ranks texts', () => {
   assert.equal(detectEducationLevel('Título de formación universitaria en derecho'), 'universitaria')
   assert.equal(detectEducationLevel('Diploma de bachillerato técnico comercial'), 'bachillerato')
@@ -88,6 +95,12 @@ test('detectDisciplines finds keywords in estudio text', () => {
   const d = detectDisciplines('Título de formación universitaria en derecho e ingeniería.')
   assert.ok(d.includes('derecho'))
   assert.ok(d.includes('ingenier'))
+})
+
+test('detectDisciplines maps "abogado" to derecho', () => {
+  // Real dataset: "Título de abogado" never contains the word "derecho".
+  const d = detectDisciplines('Título de abogado expedido o revalidado conforme a ley.')
+  assert.ok(d.includes('derecho'))
 })
 
 test('evaluateRequirements passes a properly matched profile', () => {
@@ -125,6 +138,23 @@ test('evaluateRequirements fails on insufficient experience', () => {
   } })
   const check = evaluateRequirements(v, { ...fullProfile, experienceYears: 1 })
   assert.equal(check.passed, false)
+})
+
+test('evaluateRequirements fails when years live in estudio and experiencia has legal prose', () => {
+  // Real dataset bug: cov-089. `requisitos.experiencia` carried legal text
+  // (Ley 2430) with NO figures; the real requirement "no inferior a diez (10)
+  // años" lives inside `requisitos.estudio`. Old code preferred the field and
+  // got null → non-blocking → a 5-year profile passed a 10-year post.
+  const v = baseVacancy({ requisitos: {
+    estudio: 'Título de abogado expedido o Experiencia: Experiencia profesional por lapso no inferior a diez (10) años. revalidado conforme a ley.',
+    experiencia: 'La experiencia indicada, es la prevista en el numeral 3° del artículo 66 de abogado en actividades jurídicas.',
+    tarjetaProfesional: false,
+    equivalencias: null,
+    documentsNote: null,
+  } })
+  const check = evaluateRequirements(v, { ...fullProfile, experienceYears: 5 })
+  assert.equal(check.passed, false)
+  assert.equal(describeRequirements(v).requiredYears, 10)
 })
 
 test('evaluateRequirements fails on wrong education level', () => {
@@ -188,6 +218,54 @@ test('scoreVacancy treats whereverAssigned as city neutral (full city points)', 
   const s = scoreVacancy(v, fullProfile)
   const cityPart = s.parts.find((p) => p.label === 'ciudad')
   assert.equal(cityPart?.points, 30)
+})
+
+test('scoreVacancy penalizes over-qualification for fit', () => {
+  // A university graduate is NOT a strong fit for a bachillerato post even
+  // though legally admissible. Exact level fit must outscore over-qualified.
+  const bach = baseVacancy({ requisitos: {
+    estudio: 'Diploma de bachiller. Experiencia: Un (1) año de experiencia.',
+    experiencia: null,
+    tarjetaProfesional: false,
+    equivalencias: null,
+    documentsNote: null,
+  } })
+  const exact = baseVacancy({ requisitos: {
+    estudio: 'Título de formación universitaria en derecho. Experiencia: Un (1) año de experiencia.',
+    experiencia: null,
+    tarjetaProfesional: false,
+    equivalencias: null,
+    documentsNote: null,
+  } })
+  const sBach = scoreVacancy(bach, fullProfile)
+  const sExact = scoreVacancy(exact, fullProfile)
+  const levelBach = sBach.parts.find((p) => p.label === 'nivel_educación')
+  const levelExact = sExact.parts.find((p) => p.label === 'nivel_educación')
+  assert.ok(levelBach!.points < levelExact!.points)
+})
+
+test('scoreVacancy gates experience bonus on discipline match', () => {
+  // Same experience level, but the admin post has no discipline overlap:
+  // the experience part must not pay for irrelevant posts.
+  const legal = baseVacancy() // estudio en derecho, conocimientos 'derecho disciplinario'
+  const admin = baseVacancy({
+    id: 'cov-admin',
+    requisitos: {
+      estudio: 'Título de formación tecnológica en administración. Experiencia: Un (1) año.',
+      experiencia: null,
+      tarjetaProfesional: false,
+      equivalencias: null,
+      documentsNote: null,
+    },
+    conocimientosEspecificos: ['gestión presupuestal'],
+    funciones: ['Administrar presupuesto.'],
+  })
+  const sLegal = scoreVacancy(legal, fullProfile)
+  const sAdmin = scoreVacancy(admin, fullProfile)
+  const expLegal = sLegal.parts.find((p) => p.label === 'experiencia_adicional')
+  const expAdmin = sAdmin.parts.find((p) => p.label === 'experiencia_adicional')
+  assert.ok(expLegal!.points > expAdmin!.points)
+  assert.ok(sLegal.total > sAdmin.total)
 })
 
 // --- match.ts ---
