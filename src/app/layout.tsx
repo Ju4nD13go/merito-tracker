@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { FavoritesProvider } from "@/lib/favorites";
 import { ProfileProvider } from "@/lib/profile";
+import { ApplicationsProvider } from "@/lib/applications";
 import { Navbar } from "@/components/navbar";
+import { ServiceWorkerRegister } from "@/components/service-worker-register";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,20 +36,23 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning className={inter.variable}>
       <body className="flex min-h-screen flex-col">
+        <ServiceWorkerRegister />
         <ProfileProvider>
-          <FavoritesProvider>
-            <Navbar />
-            <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-              {children}
-            </main>
-            <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-              <p>
-                Mérito Tracker — datos oficiales del concurso “Mérito
-                Construyendo Excelencia” 2026. Herramienta independiente, no
-                afiliada a la Procuraduría General de la Nación.
-              </p>
-            </footer>
-          </FavoritesProvider>
+          <ApplicationsProvider>
+            <FavoritesProvider>
+              <Navbar />
+              <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+                {children}
+              </main>
+              <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+                <p>
+                  Mérito Tracker — datos oficiales del concurso “Mérito
+                  Construyendo Excelencia” 2026. Herramienta independiente, no
+                  afiliada a la Procuraduría General de la Nación.
+                </p>
+              </footer>
+            </FavoritesProvider>
+          </ApplicationsProvider>
         </ProfileProvider>
       </body>
     </html>

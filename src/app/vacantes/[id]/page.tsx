@@ -5,6 +5,7 @@ import { ArrowLeft, BadgeCheck, Briefcase, ClipboardList, GraduationCap, MapPin,
 import { findVacancy, vacancies, formatSalary } from "@/lib/vacancies";
 import { FavoriteButton } from "@/components/favorite-button";
 import { MatchPanel } from "@/components/match-panel";
+import { StatusStepper } from "@/components/status-stepper";
 
 export function generateStaticParams() {
   return vacancies.map((v) => ({ id: v.id }));
@@ -66,6 +67,12 @@ export default async function VacancyDetailPage({
               Inscripciones hasta {v.terminoInscripciones}
             </span>
           )}
+        </div>
+        <div className="mt-3 border-t border-border pt-3">
+          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Mi estado en esta vacante
+          </p>
+          <StatusStepper vacancyId={v.id} />
         </div>
       </header>
 

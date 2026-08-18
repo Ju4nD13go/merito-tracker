@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test:domain": "node --test src/domain/*.test.ts",
-    "etl": "node etl/extract.ts",
-    "validate:normalization": "node src/domain/validate-normalization.ts"
+    "etl": "node --experimental-strip-types etl/extract.ts",
+    "validate:normalization": "node --experimental-strip-types src/domain/validate-normalization.ts",
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

@@ -6,6 +6,7 @@ import { ArrowRight, Download, FileSpreadsheet, Sparkles, User } from "lucide-re
 import { vacancies } from "@/lib/data";
 import { useProfile } from "@/lib/profile";
 import { useFavorites } from "@/lib/favorites";
+import { useApplications } from "@/lib/applications";
 import { rankVacancies } from "@/domain/match";
 import { VacancyCard } from "@/components/vacancy-card";
 import { exportFavoritesToExcel } from "@/lib/excel";
@@ -18,6 +19,11 @@ const totalEmpleos = vacancies.reduce(
 export default function DashboardPage() {
   const { profile, hasProfile } = useProfile();
   const { favorites } = useFavorites();
+  const { applications } = useApplications();
+
+  const appliedCount = Object.values(applications).filter(
+    (r) => r.status === "aplicada" || r.status === "en_proceso" || r.status === "entrevista" || r.status === "nombrada"
+  ).length;
 
   const ranked = useMemo(() => {
     if (!hasProfile) return null;
@@ -72,13 +78,11 @@ export default function DashboardPage() {
               <p className="mt-0.5 text-sm text-muted-foreground">En favoritos</p>
             </div>
             <div className="animate-in rounded-lg bg-muted p-4 fade-in slide-in-from-bottom-2 [animation-delay:240ms]">
-              <p className="text-sm font-medium text-muted-foreground">
-                Siguiente paso
+              <p className="text-3xl font-bold text-primary">
+                {appliedCount}
               </p>
-              <p className="mt-1 text-sm">
-                {hasProfile
-                  ? "Revisa tus mejores coincidencias y guarda las que apliques."
-                  : "Completa tu perfil para activar el motor de compatibilidad."}
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                En proceso de postulación
               </p>
             </div>
           </div>

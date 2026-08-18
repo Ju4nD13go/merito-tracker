@@ -3,7 +3,25 @@
 import Link from "next/link";
 import { ArrowRight, Heart, MapPin, Users } from "lucide-react";
 import { useFavorites } from "@/lib/favorites";
+import { useApplications, type ApplicationStatus } from "@/lib/applications";
 import type { Vacancy } from "@/domain/contracts";
+
+const STATUS_BADGES: Partial<Record<ApplicationStatus, string>> = {
+  aplicada: "bg-primary/10 text-primary border-primary/30",
+  en_proceso: "bg-accent/10 text-accent border-accent/40",
+  entrevista: "bg-accent/10 text-accent border-accent/40",
+  nombrada: "bg-primary/10 text-primary border-primary/30",
+  descartada: "bg-destructive/5 text-destructive border-destructive/30",
+};
+
+const STATUS_LABELS: Partial<Record<ApplicationStatus, string>> = {
+  interesada: "Interesada",
+  aplicada: "Aplicada",
+  en_proceso: "En proceso",
+  entrevista: "Entrevista",
+  nombrada: "Nombrada",
+  descartada: "Descartada",
+};
 
 export function VacancyCard({
   vacancy,
@@ -15,7 +33,9 @@ export function VacancyCard({
   index?: number;
 }) {
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { getStatus } = useApplications();
   const fav = isFavorite(vacancy.id);
+  const status = getStatus(vacancy.id);
   const cities = vacancy.ubicaciones.sites.slice(0, 3);
 
   return (
@@ -43,6 +63,15 @@ export function VacancyCard({
           <p className="text-xs text-muted-foreground">
             {vacancy.empleo.codigoGrado} · Nivel {vacancy.empleo.nivelJerarquico}
           </p>
+          {status && STATUS_LABELS[status] && (
+            <span
+              className={`mt-1 inline-block rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                STATUS_BADGES[status] ?? "border-border text-muted-foreground"
+              }`}
+            >
+              {STATUS_LABELS[status]}
+            </span>
+          )}
         </div>
         <button
           onClick={() => toggleFavorite(vacancy.id)}
