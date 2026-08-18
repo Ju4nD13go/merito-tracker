@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# next.js build output
+.next/
+out/
+next-env.d.ts
+
+# engram local memory
+.engram/
+
+# data pipeline artifacts
+data/raw/
+data/*.cache.txt
+data/validation-report-*.md
+etl/tmp/
+
+# environment
+.env*
+!.env.example
+
+# misc
+*.log
+.DS_Store
