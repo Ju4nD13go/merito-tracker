@@ -57,6 +57,11 @@ function subscribe(listener: Listener): () => void {
   };
 }
 
+/** Test helper: drop the module-level cache (stores cache across renders). */
+export function resetDocumentsCacheForTests(): void {
+  cache = null;
+}
+
 interface DocumentsContextValue {
   checkedFor: (vacancyId: string) => string[];
   toggleDoc: (vacancyId: string, docId: string) => void;

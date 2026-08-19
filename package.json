@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:domain": "node --test src/domain/*.test.ts",
+    "test:ui": "vitest run",
     "etl": "node --experimental-strip-types etl/extract.ts",
     "validate:normalization": "node --experimental-strip-types src/domain/validate-normalization.ts",
     "icons": "node scripts/generate-icons.mjs"
@@ -25,13 +26,18 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "jsdom": "^30.0.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@11.18.0"
 }
