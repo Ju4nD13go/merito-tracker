@@ -6,6 +6,7 @@ import { ProfileProvider } from "@/lib/profile";
 import { ApplicationsProvider } from "@/lib/applications";
 import { Navbar } from "@/components/navbar";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
+import { StorageNotice } from "@/components/storage-notice";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,6 +41,7 @@ export default function RootLayout({
         <ProfileProvider>
           <ApplicationsProvider>
             <FavoritesProvider>
+              <StorageNotice />
               <Navbar />
               <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
                 {children}
