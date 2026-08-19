@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Check, User } from "lucide-react";
 import { useProfile } from "@/lib/profile";
 import { vacancies } from "@/lib/vacancies";
@@ -20,6 +20,28 @@ const LEVEL_LABELS: Record<EducationLevel, string> = {
 export default function ProfilePage() {
   const { profile, hasProfile, saveProfile, clearProfile } = useProfile();
   const [saved, setSaved] = useState(false);
+  // Local draft so typing is 1:1 (spaces preserved). The parsed array is
+  // committed on blur/submit — trimming inside onChange was eating the
+  // space as the user typed it ("Ingenieria de" became "Ingenieriade").
+  const [degreeDraft, setDegreeDraft] = useState(() =>
+    profile.degrees.join(", ")
+  );
+  const degreeDirty = useRef(false);
+
+  function refreshDegreeDraft() {
+    setDegreeDraft(profile.degrees.join(", "));
+  }
+
+  function commitDegreeDraft() {
+    if (!degreeDirty.current) return;
+    const degrees = degreeDraft
+      .split(",")
+      .map((d) => d.trim())
+      .filter(Boolean);
+    saveProfile({ ...profile, degrees });
+    degreeDirty.current = false;
+    setSaved(true);
+  }
 
   const allCities = useMemo(
     () =>
@@ -39,7 +61,7 @@ export default function ProfilePage() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    saveProfile(profile);
+    commitDegreeDraft();
     setSaved(true);
   }
 
@@ -97,15 +119,14 @@ export default function ProfilePage() {
           </span>
           <input
             type="text"
-            value={profile.degrees.join(", ")}
+            value={degreeDraft}
+            onFocus={refreshDegreeDraft}
             onChange={(e) => {
-              const degrees = e.target.value
-                .split(",")
-                .map((d) => d.trim())
-                .filter(Boolean);
-              saveProfile({ ...profile, degrees });
+              setDegreeDraft(e.target.value);
+              degreeDirty.current = true;
               setSaved(false);
             }}
+            onBlur={commitDegreeDraft}
             placeholder="Ej: Derecho, Administración Pública"
             className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
