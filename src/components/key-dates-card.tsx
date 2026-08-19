@@ -15,22 +15,21 @@ interface KeyDatesCardProps {
     inscripcionWindow?: { label: string; start: string; end: string } | null;
   };
   lastUpdated: string | null;
+  /** Injectable "today" for deterministic tests — defaults to real date. */
+  today?: string;
 }
 
 /** Banner message derived from the snapshot, or null for no banner. */
 export function countdownText(
   snapshot: ReturnType<typeof buildKeyDatesSnapshot>
 ): string | null {
-  const insc = snapshot.dates.find((x) => x.id === "inscripcion");
-  const today = new Date().toISOString().slice(0, 10);
-  if (insc?.end && snapshot.registrationOpen) {
-    const days = daysUntil(insc.end, today);
-    if (days !== null && days >= 0) {
-      return days === 0
-        ? "¡Último día de inscripciones!"
-        : `¡Inscripciones ABIERTAS! Faltan ${days} día${days === 1 ? "" : "s"} para el cierre (${formatShortDate(insc.end)})`;
-    }
-    return "¡Inscripciones ABIERTAS!";
+  // During the registration window, nextDeadline points at the window end.
+  // Always show the countdown while it is open.
+  if (snapshot.registrationOpen && snapshot.nextDeadline) {
+    const days = snapshot.nextDeadline.daysLeft;
+    return days === 0
+      ? "¡Último día de inscripciones!"
+      : `¡Inscripciones ABIERTAS! Faltan ${days} día${days === 1 ? "" : "s"} para el cierre (${formatShortDate(snapshot.nextDeadline.date)})`;
   }
   if (snapshot.nextDeadline && snapshot.nextDeadline.daysLeft <= 7) {
     return `Faltan ${snapshot.nextDeadline.daysLeft} día${snapshot.nextDeadline.daysLeft === 1 ? "" : "s"} para ${snapshot.nextDeadline.label}`;
@@ -83,8 +82,15 @@ function DateRow({ date }: { date: KeyDate }) {
   );
 }
 
-export function KeyDatesCard({ meta, lastUpdated }: KeyDatesCardProps) {
-  const snapshot = useMemo(() => buildKeyDatesSnapshot(meta, lastUpdated), [meta, lastUpdated]);
+export function KeyDatesCard({ meta, lastUpdated, today }: KeyDatesCardProps) {
+  const snapshot = useMemo(
+    () =>
+      buildKeyDatesSnapshot(
+        { ...meta, actualDate: today ?? null },
+        lastUpdated
+      ),
+    [meta, lastUpdated, today]
+  );
   const banner = countdownText(snapshot);
 
   return (

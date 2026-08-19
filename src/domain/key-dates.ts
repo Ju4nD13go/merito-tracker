@@ -133,14 +133,17 @@ export function buildKeyDatesSnapshot(
     insc?.start && insc.end && today >= insc.start && today <= insc.end,
   )
 
-  // nearest upcoming deadline among confirmed, non-past events
+  // nearest upcoming deadline among confirmed, non-past events. For a
+  // closed-but-soon window the relevant date is the START (registration
+  // opens); once open, it is the END (closes).
   let nextDeadline: KeyDatesSnapshot["nextDeadline"] = null
   for (const d of dates) {
     if (!d.confirmed || !d.start) continue
-    const target = d.kind === "window" ? d.end : d.start
+    const target =
+      d.kind === "window" && registrationOpen ? d.end : d.start
     const days = daysUntil(target, today)
     if (days === null || days < 0) continue
-    if (!nextDeadline || (days < nextDeadline.daysLeft)) {
+    if (!nextDeadline || days < nextDeadline.daysLeft) {
       nextDeadline = {
         date: target!,
         daysLeft: days,

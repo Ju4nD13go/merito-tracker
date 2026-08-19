@@ -26,10 +26,11 @@ test("buildKeyDates marks unpublished stages as confirmed=false", () => {
 test("buildKeyDatesSnapshot detects registration open/closed", () => {
   const open = buildKeyDatesSnapshot({ ...META, actualDate: "2026-09-10" }, "2026-08-18T00:00:00Z");
   assert.equal(open.registrationOpen, true);
+  assert.equal(open.nextDeadline?.daysLeft, 8); // window CLOSES 2026-09-18
 
   const before = buildKeyDatesSnapshot({ ...META, actualDate: "2026-08-18" }, null);
   assert.equal(before.registrationOpen, false);
-  assert.equal(before.nextDeadline?.daysLeft, 31); // window closes 2026-09-18
+  assert.equal(before.nextDeadline?.daysLeft, 20); // window OPENS 2026-09-07
 });
 
 test("daysUntil returns negative for past dates and null for missing", () => {
