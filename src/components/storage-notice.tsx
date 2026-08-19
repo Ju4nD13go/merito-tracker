@@ -156,7 +156,7 @@ export function StorageNotice() {
 
             <button
               onClick={dismissModal}
-              className="btn-lift mt-5 w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+              className="btn-glow mt-5 w-full rounded-md px-4 py-2 text-sm font-medium text-primary-foreground"
             >
               Entendido, ¡a empezar!
             </button>

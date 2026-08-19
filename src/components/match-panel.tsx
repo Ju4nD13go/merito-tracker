@@ -38,7 +38,7 @@ export function MatchPanel({ vacancy }: { vacancy: Vacancy }) {
             </p>
             <Link
               href="/mi-perfil"
-              className="btn-lift mt-3 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+              className="btn-glow mt-3 inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-primary-foreground"
             >
               <User className="h-4 w-4" /> Armar mi perfil
             </Link>
@@ -65,9 +65,9 @@ export function MatchPanel({ vacancy }: { vacancy: Vacancy }) {
       >
         <div className="flex items-center gap-3">
           {passed ? (
-            <CheckCircle2 className="h-6 w-6 text-primary" />
+            <CheckCircle2 className="h-6 w-6 text-primary heart-pop" />
           ) : (
-            <XCircle className="h-6 w-6 text-destructive" />
+            <XCircle className="h-6 w-6 text-destructive heart-pop" />
           )}
           <div>
             <h2 className="text-lg font-semibold leading-tight">
@@ -131,7 +131,7 @@ export function MatchPanel({ vacancy }: { vacancy: Vacancy }) {
             </div>
             <div className="mb-4 h-1.5 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-primary transition-all duration-500"
+                className="bar-shimmer h-full rounded-full transition-all duration-500"
                 style={{ width: `${match.score.total}%` }}
               />
             </div>

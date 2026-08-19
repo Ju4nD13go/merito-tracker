@@ -10,6 +10,7 @@ import { useApplications } from "@/lib/applications";
 import { rankVacancies } from "@/domain/match";
 import { VacancyCard } from "@/components/vacancy-card";
 import { KeyDatesCard } from "@/components/key-dates-card";
+import { AnimatedCounter } from "@/components/animated-counter";
 import { exportFavoritesToExcel } from "@/lib/excel";
 
 const totalEmpleos = vacancies.reduce(
@@ -49,7 +50,11 @@ export default function DashboardPage() {
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-2xl"
+          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-2xl blob-drift"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-20 -left-10 h-48 w-48 rounded-full bg-accent/10 blur-2xl blob-drift [animation-delay:2s]"
         />
         <div className="relative">
           <span className="inline-flex animate-in items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary fade-in">
@@ -57,7 +62,7 @@ export default function DashboardPage() {
             Concurso de méritos · Inscripción {inscriptionLabel}
           </span>
           <h1 className="mt-3 animate-in text-2xl font-bold fade-in slide-in-from-bottom-2 sm:text-3xl">
-            Mérito Construyendo Excelencia 2026
+            <span className="text-gradient">Mérito Construyendo Excelencia 2026</span>
           </h1>
           <p className="mt-1 max-w-xl animate-in text-muted-foreground fade-in slide-in-from-bottom-2 [animation-delay:80ms]">
             {vacancies.length} convocatorias · {totalEmpleos} empleos ·{" "}
@@ -67,23 +72,27 @@ export default function DashboardPage() {
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="animate-in rounded-lg bg-primary/10 p-4 fade-in slide-in-from-bottom-2 [animation-delay:120ms]">
+            <div className="card-live animate-in rounded-lg bg-primary/10 p-4 fade-in slide-in-from-bottom-2 [animation-delay:120ms]">
               <p className="text-3xl font-bold text-primary">
-                {ranked?.passedCount ?? "—"}
+                {hasProfile && ranked ? (
+                  <AnimatedCounter value={ranked.passedCount} />
+                ) : (
+                  "—"
+                )}
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 Vacantes compatibles
               </p>
             </div>
-            <div className="animate-in rounded-lg bg-accent/10 p-4 fade-in slide-in-from-bottom-2 [animation-delay:180ms]">
+            <div className="card-live animate-in rounded-lg bg-accent/10 p-4 fade-in slide-in-from-bottom-2 [animation-delay:180ms]">
               <p className="text-3xl font-bold text-accent">
-                {favorites.length}
+                <AnimatedCounter value={favorites.length} />
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">En favoritos</p>
             </div>
-            <div className="animate-in rounded-lg bg-muted p-4 fade-in slide-in-from-bottom-2 [animation-delay:240ms]">
+            <div className="card-live animate-in rounded-lg bg-muted p-4 fade-in slide-in-from-bottom-2 [animation-delay:240ms]">
               <p className="text-3xl font-bold text-primary">
-                {appliedCount}
+                <AnimatedCounter value={appliedCount} />
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 En proceso de postulación
@@ -95,7 +104,7 @@ export default function DashboardPage() {
             {!hasProfile && (
               <Link
                 href="/mi-perfil"
-                className="btn-lift inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+                className="btn-glow inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-primary-foreground"
               >
                 <User className="h-4 w-4" /> Armar mi perfil
               </Link>

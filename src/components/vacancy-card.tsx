@@ -40,7 +40,7 @@ export function VacancyCard({
 
   return (
     <article
-      className="group relative flex animate-in flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md motion-reduce:animate-none motion-reduce:transition-none"
+      className="card-live group relative flex animate-in flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm motion-reduce:animate-none motion-reduce:transition-none"
       style={{ animationDelay: `${Math.min(index * 45, 360)}ms` }}
     >
       {/* Stretched link: the whole card is clickable */}
@@ -112,7 +112,7 @@ export function VacancyCard({
           </div>
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full bg-primary"
+              className="bar-shimmer h-full rounded-full"
               style={{ width: `${score}%` }}
             />
           </div>

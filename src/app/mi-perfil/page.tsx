@@ -193,7 +193,7 @@ export default function ProfilePage() {
         <div className="flex flex-wrap gap-3">
           <button
             type="submit"
-            className="btn-lift rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+            className="btn-glow rounded-md px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Guardar perfil
           </button>
