@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, LayoutDashboard, Moon, Search, Sun, User } from "lucide-react";
+import { Heart, LayoutDashboard, Map, Moon, Search, Sun, User } from "lucide-react";
 import { useFavorites } from "@/lib/favorites";
 import { useTheme } from "@/lib/theme";
 
@@ -10,6 +10,7 @@ const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/vacantes", label: "Vacantes", icon: Search },
   { href: "/favoritos", label: "Favoritos", icon: Heart },
+  { href: "/proceso", label: "Proceso", icon: Map },
   { href: "/mi-perfil", label: "Mi perfil", icon: User },
 ];
 

@@ -4,9 +4,12 @@ import "./globals.css";
 import { FavoritesProvider } from "@/lib/favorites";
 import { ProfileProvider } from "@/lib/profile";
 import { ApplicationsProvider } from "@/lib/applications";
+import { DocumentsProvider } from "@/lib/documents";
 import { Navbar } from "@/components/navbar";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { StorageNotice } from "@/components/storage-notice";
+import { dataset } from "@/lib/data";
+import { formatFullDate } from "@/lib/dates";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,18 +53,24 @@ export default function RootLayout({
         <ProfileProvider>
           <ApplicationsProvider>
             <FavoritesProvider>
-              <StorageNotice />
-              <Navbar />
-              <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-                {children}
-              </main>
-              <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-                <p>
-                  Mérito Tracker — datos oficiales del concurso “Mérito
-                  Construyendo Excelencia” 2026. Herramienta independiente, no
-                  afiliada a la Procuraduría General de la Nación.
-                </p>
-              </footer>
+              <DocumentsProvider>
+                <StorageNotice />
+                <Navbar />
+                <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+                  {children}
+                </main>
+                <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+                  <p>
+                    Mérito Tracker — datos oficiales del concurso “Mérito
+                    Construyendo Excelencia” 2026. Herramienta independiente, no
+                    afiliada a la Procuraduría General de la Nación.
+                  </p>
+                  <p className="mt-2 text-xs">
+                    Datos oficiales actualizados el{" "}
+                    {formatFullDate(dataset.generatedAt)}
+                  </p>
+                </footer>
+              </DocumentsProvider>
             </FavoritesProvider>
           </ApplicationsProvider>
         </ProfileProvider>

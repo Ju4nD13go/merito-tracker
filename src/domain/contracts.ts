@@ -71,9 +71,19 @@ export interface VacancyDataset {
   generatedAt: string
   source: { pdf: string; pages: number; sizeBytes: number; textCache: string }
   metadata: {
+    processName: string
     competitionName: string
     resolutions: number[]
-    inscripcionWindow: { label: string; start: string; end: string }
+    formatoCodigo: string
+    formatoVersion: number
+    fechaFijacion: string | null
+    fechaFijacionLabel: string | null
+    inscripcionWindow: { label: string; start: string; end: string } | null
+    officialChecksums?: {
+      forms: number
+      empleos: number
+      byNivel?: Record<string, number>
+    }
   }
   counts: Record<string, unknown>
   vacancies: Vacancy[]

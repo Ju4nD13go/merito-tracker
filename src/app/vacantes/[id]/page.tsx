@@ -6,6 +6,7 @@ import { findVacancy, vacancies, formatSalary } from "@/lib/vacancies";
 import { FavoriteButton } from "@/components/favorite-button";
 import { MatchPanel } from "@/components/match-panel";
 import { StatusStepper } from "@/components/status-stepper";
+import { DocumentChecklist } from "@/components/document-checklist";
 
 export function generateStaticParams() {
   return vacancies.map((v) => ({ id: v.id }));
@@ -78,6 +79,9 @@ export default async function VacancyDetailPage({
 
       {/* Compatibilidad: eliminatorio + clasificatorio con transparencia */}
       <MatchPanel vacancy={v} />
+
+      {/* Checklist de documentos para esta vacante */}
+      <DocumentChecklist vacancy={v} />
 
       {/* Ubicaciones */}
       <section className="card-surface animate-in p-6 fade-in slide-in-from-bottom-2 [animation-delay:80ms]">

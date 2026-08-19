@@ -7,6 +7,7 @@ import { vacancies } from "@/lib/vacancies";
 import { normalizeCity } from "@/domain/cities";
 import { EDUCATION_LEVELS } from "@/domain/contracts";
 import type { EducationLevel } from "@/domain/contracts";
+import { ProfileBackup } from "@/components/profile-backup";
 
 const LEVEL_LABELS: Record<EducationLevel, string> = {
   bachillerato: "Bachillerato",
@@ -192,6 +193,8 @@ export default function ProfilePage() {
           </p>
         )}
       </form>
+
+      <ProfileBackup />
     </div>
   );
 }

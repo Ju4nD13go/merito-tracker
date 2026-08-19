@@ -7,6 +7,7 @@ import {
   useMemo,
   useSyncExternalStore,
 } from "react";
+import { subscribeBackupListener } from "@/lib/storage-events";
 
 /**
  * Lightweight localStorage-backed store for favorite vacancy ids.
@@ -44,7 +45,15 @@ function write(next: string[]): void {
 
 function subscribe(listener: Listener): () => void {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  const onBackup = () => {
+    cache = null;
+    listener();
+  };
+  const unsubBackup = subscribeBackupListener(onBackup);
+  return () => {
+    listeners.delete(listener);
+    unsubBackup();
+  };
 }
 
 interface FavoritesContextValue {

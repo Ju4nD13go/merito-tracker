@@ -8,6 +8,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import type { UserProfile } from "@/domain/user-profile";
+import { subscribeBackupListener } from "@/lib/storage-events";
 
 /**
  * Lightweight localStorage-backed store for the user profile.
@@ -54,7 +55,15 @@ function write(next: UserProfile): void {
 
 function subscribe(listener: Listener): () => void {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  const onBackup = () => {
+    cache = null;
+    listener();
+  };
+  const unsubBackup = subscribeBackupListener(onBackup);
+  return () => {
+    listeners.delete(listener);
+    unsubBackup();
+  };
 }
 
 interface ProfileContextValue {

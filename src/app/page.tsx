@@ -3,18 +3,22 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight, Download, FileSpreadsheet, Sparkles, User } from "lucide-react";
-import { vacancies } from "@/lib/data";
+import { dataset, vacancies } from "@/lib/data";
 import { useProfile } from "@/lib/profile";
 import { useFavorites } from "@/lib/favorites";
 import { useApplications } from "@/lib/applications";
 import { rankVacancies } from "@/domain/match";
 import { VacancyCard } from "@/components/vacancy-card";
+import { KeyDatesCard } from "@/components/key-dates-card";
 import { exportFavoritesToExcel } from "@/lib/excel";
 
 const totalEmpleos = vacancies.reduce(
   (a, v) => a + (v.ubicaciones.numeroCargos ?? 0),
   0
 );
+
+const inscriptionLabel =
+  dataset.metadata.inscripcionWindow?.label ?? "fechas por confirmar";
 
 export default function DashboardPage() {
   const { profile, hasProfile } = useProfile();
@@ -50,7 +54,7 @@ export default function DashboardPage() {
         <div className="relative">
           <span className="inline-flex animate-in items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary fade-in">
             <Sparkles className="h-3 w-3" />
-            Concurso de méritos · Inscripción del 07 al 18 de septiembre
+            Concurso de méritos · Inscripción {inscriptionLabel}
           </span>
           <h1 className="mt-3 animate-in text-2xl font-bold fade-in slide-in-from-bottom-2 sm:text-3xl">
             Mérito Construyendo Excelencia 2026
@@ -114,6 +118,14 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
+
+      <KeyDatesCard
+        meta={{
+          fechaFijacion: dataset.metadata.fechaFijacion,
+          inscripcionWindow: dataset.metadata.inscripcionWindow,
+        }}
+        lastUpdated={dataset.generatedAt}
+      />
 
       {topMatches.length > 0 && (
         <section className="animate-in fade-in [animation-delay:120ms]">
