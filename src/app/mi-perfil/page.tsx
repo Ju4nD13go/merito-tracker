@@ -171,7 +171,7 @@ export default function ProfilePage() {
         <div className="flex flex-wrap gap-3">
           <button
             type="submit"
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+            className="btn-lift rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
             Guardar perfil
           </button>
@@ -179,7 +179,7 @@ export default function ProfilePage() {
             <button
               type="button"
               onClick={clearProfile}
-              className="rounded-md border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="btn-lift rounded-md border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               Borrar perfil
             </button>

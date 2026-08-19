@@ -11,7 +11,7 @@ export function FavoriteButton({ vacancyId }: { vacancyId: string }) {
     <button
       onClick={() => toggleFavorite(vacancyId)}
       aria-pressed={fav}
-      className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+      className={`btn-lift inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium ${
         fav
           ? "bg-accent text-accent-foreground"
           : "border hover:bg-muted"

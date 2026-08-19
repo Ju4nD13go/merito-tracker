@@ -42,7 +42,7 @@ export default function FavoritesPage() {
         </p>
         <Link
           href="/vacantes"
-          className="mt-6 inline-flex animate-in items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:opacity-90 fade-in [animation-delay:180ms]"
+          className="btn-lift mt-6 inline-flex animate-in items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 fade-in [animation-delay:180ms]"
         >
           Explorar vacantes
         </Link>
@@ -65,7 +65,7 @@ export default function FavoritesPage() {
           <button
             onClick={handleExport}
             disabled={exporting}
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:opacity-90 disabled:opacity-50"
+            className="btn-lift inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:opacity-90 disabled:opacity-50"
           >
             <FileSpreadsheet className="h-4 w-4" />
             <Download className="h-4 w-4" />
@@ -73,7 +73,7 @@ export default function FavoritesPage() {
           </button>
           <button
             onClick={clearFavorites}
-            className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="btn-lift inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <Trash2 className="h-4 w-4" /> Limpiar
           </button>

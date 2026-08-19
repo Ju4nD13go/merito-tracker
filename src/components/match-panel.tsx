@@ -38,7 +38,7 @@ export function MatchPanel({ vacancy }: { vacancy: Vacancy }) {
             </p>
             <Link
               href="/mi-perfil"
-              className="mt-3 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:opacity-90"
+              className="btn-lift mt-3 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
             >
               <User className="h-4 w-4" /> Armar mi perfil
             </Link>

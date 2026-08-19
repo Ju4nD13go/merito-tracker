@@ -91,21 +91,21 @@ export default function DashboardPage() {
             {!hasProfile && (
               <Link
                 href="/mi-perfil"
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:-translate-y-0.5 hover:opacity-90"
+                className="btn-lift inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
               >
                 <User className="h-4 w-4" /> Armar mi perfil
               </Link>
             )}
             <Link
               href="/vacantes"
-              className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:bg-muted"
+              className="btn-lift inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
             >
               Explorar vacantes <ArrowRight className="h-4 w-4" />
             </Link>
             {favVacancies.length > 0 && (
               <button
                 onClick={() => exportFavoritesToExcel(favVacancies)}
-                className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-all hover:-translate-y-0.5 hover:opacity-90"
+                className="btn-lift inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:opacity-90"
               >
                 <FileSpreadsheet className="h-4 w-4" /> Descargar Excel de favoritos
                 <Download className="h-4 w-4" />

@@ -36,6 +36,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning className={inter.variable}>
+      <head>
+        {/* Apply persisted theme before first paint to avoid a flash of
+            the wrong theme (FOUC). Keep in sync with src/lib/theme.tsx. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=window.localStorage.getItem("merito-tracker:theme");var d=t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches);if(d)document.documentElement.classList.add("dark");document.documentElement.style.colorScheme=d?"dark":"light";}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="flex min-h-screen flex-col">
         <ServiceWorkerRegister />
         <ProfileProvider>
