@@ -1,5 +1,7 @@
 # Merito Tracker
 
+> **Live:** <https://merito-tracker.pages.dev/>
+
 Static tracker for Colombia's public-sector job contests (CNSC/SIMO). Browse hundreds of indexed vacancies, check how well they match your profile, track key dates, and keep a local checklist of documents — all without a backend, all in the browser.
 
 ## Why it exists
