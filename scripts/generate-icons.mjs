@@ -4,7 +4,6 @@
 // Outputs:   src/app/favicon.ico, src/app/icon.png,
 //            public/icon-192.png, public/icon-512.png, public/icon-maskable-512.png
 
-import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
